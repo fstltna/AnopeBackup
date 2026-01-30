@@ -5,7 +5,7 @@ my $MTDIR = "/home/anopeuser/services";
 my $BACKUPDIR = "/home/anopeuser/backups";
 my $TARCMD = "/bin/tar czf";
 my $SQLDUMPCMD = "/usr/bin/mysqldump";
-my $VERSION = "1.7.2";
+my $VERSION = "1.7.3";
 my $OPTION_FILE = "/home/anopeuser/.anbackuprc";
 my $LATESTFILE = "$BACKUPDIR/anope.sql-1";
 my $DOSNAPSHOT = 0;
@@ -92,14 +92,13 @@ sub DumpMysql
 {
 	my $DUMPFILE = $_[0];
 
-	print "Backing up MYSQL data: ";
+	print "Done\nBacking up MYSQL data: ";
 	if (-f "$DUMPFILE")
 	{
 		unlink("$DUMPFILE");
 	}
 	# print "User = $MYSQLUSER, PSWD = $MYSQLPSWD\n";
-	system("$SQLDUMPCMD --user=$MYSQLUSER --password=$MYSQLPSWD --result-file=$DUMPFILE $MYSQLDBNAME");
-	print "\n";
+	system("$SQLDUMPCMD --user=$MYSQLUSER --password=$MYSQLPSWD --result-file=$DUMPFILE $MYSQLDBNAME > /dev/null 2>\&1");
 }
 
 if (defined $CMDOPTION)
@@ -191,7 +190,7 @@ while ($FileRevision > 0)
 }
 
 print "Done\nCreating New Backup: ";
-system("$TARCMD $BACKUPDIR/anopebackup-1.tgz $MTDIR");
+system("$TARCMD $BACKUPDIR/anopebackup-1.tgz $MTDIR > /dev/null 2>\&1");
 print "Done\nMoving Existing MySQL data: ";
 if (-f "$BACKUPDIR/anope.sql-5")
 {
